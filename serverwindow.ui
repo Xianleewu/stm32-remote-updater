@@ -2,16 +2,35 @@
 <ui version="4.0">
  <class>ServerWindow</class>
  <widget class="QWidget" name="ServerWindow">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>651</width>
-    <height>336</height>
+    <height>369</height>
    </rect>
+  </property>
+  <property name="mouseTracking">
+   <bool>false</bool>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::TabFocus</enum>
+  </property>
+  <property name="acceptDrops">
+   <bool>false</bool>
   </property>
   <property name="windowTitle">
    <string>ServerWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="qdarkstyle/style.qrc">
+    <normaloff>:/qss_icons/rc/antenna.png</normaloff>:/qss_icons/rc/antenna.png</iconset>
+  </property>
+  <property name="windowOpacity">
+   <double>5.000000000000000</double>
   </property>
   <property name="styleSheet">
    <string notr="true">/*
@@ -1281,8 +1300,7 @@ QDateEdit::down-arrow:on, QDateEdit::down-arrow:hover,
 QDateEdit::down-arrow:focus
 {
     image: url(:/qss_icons/rc/down_arrow.png);
-}
-</string>
+}</string>
   </property>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
@@ -1290,26 +1308,39 @@ QDateEdit::down-arrow:focus
      <x>20</x>
      <y>0</y>
      <width>251</width>
-     <height>321</height>
+     <height>361</height>
     </rect>
    </property>
    <property name="title">
-    <string>TCP</string>
+    <string>Server</string>
    </property>
    <property name="flat">
     <bool>false</bool>
    </property>
-   <widget class="QPushButton" name="pushButton_connect">
+   <widget class="QPushButton" name="pushButton_bind">
     <property name="geometry">
      <rect>
-      <x>174</x>
+      <x>180</x>
       <y>30</y>
       <width>61</width>
       <height>61</height>
      </rect>
     </property>
+    <property name="locale">
+     <locale language="Chinese" country="China"/>
+    </property>
     <property name="text">
-     <string>Connect</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="qdarkstyle/style.qrc">
+      <normaloff>:/qss_icons/rc/link.png</normaloff>:/qss_icons/rc/link.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>32</width>
+      <height>32</height>
+     </size>
     </property>
    </widget>
    <widget class="QTextBrowser" name="textBrowser">
@@ -1318,7 +1349,7 @@ QDateEdit::down-arrow:focus
       <x>10</x>
       <y>100</y>
       <width>231</width>
-      <height>161</height>
+      <height>181</height>
      </rect>
     </property>
    </widget>
@@ -1351,9 +1382,9 @@ QDateEdit::down-arrow:focus
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>64</x>
+      <x>60</x>
       <y>28</y>
-      <width>101</width>
+      <width>111</width>
       <height>64</height>
      </rect>
     </property>
@@ -1374,24 +1405,66 @@ QDateEdit::down-arrow:focus
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>11</x>
-      <y>271</y>
+      <x>10</x>
+      <y>320</y>
       <width>231</width>
-      <height>24</height>
+      <height>30</height>
      </rect>
     </property>
-    <property name="text">
-     <string>clear</string>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLineEdit" name="lineEdit_ip_2">
+       <property name="text">
+        <string>update</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_clear_3">
+       <property name="text">
+        <string>Send</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>290</y>
+      <width>231</width>
+      <height>26</height>
+     </rect>
     </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QPushButton" name="pushButton_clear">
+       <property name="text">
+        <string>Clear Output</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_clear_2">
+       <property name="text">
+        <string>Clear Input</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
    <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
-   <zorder>pushButton_connect</zorder>
+   <zorder>pushButton_bind</zorder>
    <zorder>textBrowser</zorder>
-   <zorder>pushButton</zorder>
+   <zorder>pushButton_clear</zorder>
+   <zorder>lineEdit_ip_2</zorder>
+   <zorder>pushButton_clear_2</zorder>
+   <zorder>pushButton_clear_3</zorder>
   </widget>
   <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
@@ -1399,35 +1472,44 @@ QDateEdit::down-arrow:focus
      <x>280</x>
      <y>0</y>
      <width>361</width>
-     <height>281</height>
+     <height>191</height>
     </rect>
    </property>
    <property name="title">
-    <string>Updater</string>
+    <string>Client</string>
    </property>
    <widget class="QLineEdit" name="lineEdit_file">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>30</y>
+      <y>70</y>
       <width>251</width>
-      <height>20</height>
+      <height>31</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="maximumSize">
      <size>
       <width>16777215</width>
-      <height>20</height>
+      <height>40</height>
      </size>
+    </property>
+    <property name="text">
+     <string>userapp.bin</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_browser">
     <property name="geometry">
      <rect>
       <x>270</x>
-      <y>30</y>
-      <width>75</width>
-      <height>23</height>
+      <y>70</y>
+      <width>81</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -1438,48 +1520,110 @@ QDateEdit::down-arrow:focus
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>66</y>
+      <y>160</y>
       <width>341</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="value">
      <number>24</number>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QComboBox" name="comboBox">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>100</y>
-      <width>75</width>
+      <y>30</y>
+      <width>251</width>
       <height>31</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Runloader</string>
+    <property name="insertPolicy">
+     <enum>QComboBox::InsertAtTop</enum>
     </property>
+    <item>
+     <property name="text">
+      <string>All Clients</string>
+     </property>
+    </item>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="pushButton_browser_2">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>100</y>
-      <width>75</width>
+      <x>270</x>
+      <y>30</y>
+      <width>81</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Runapp</string>
+     <string>DisConnect</string>
     </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>341</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Update</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_3">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Runloader</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_4">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Runapp</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>300</x>
+     <x>330</x>
      <y>300</y>
-     <width>161</width>
+     <width>121</width>
      <height>16</height>
     </rect>
    </property>
@@ -1505,6 +1649,10 @@ QDateEdit::down-arrow:focus
       <property name="text">
        <string>Min</string>
       </property>
+      <property name="icon">
+       <iconset resource="qdarkstyle/style.qrc">
+        <normaloff>:/qss_icons/rc/minus-circle.png</normaloff>:/qss_icons/rc/minus-circle.png</iconset>
+      </property>
      </widget>
     </item>
     <item>
@@ -1521,6 +1669,10 @@ QDateEdit::down-arrow:focus
     </item>
    </layout>
   </widget>
+  <zorder>groupBox_2</zorder>
+  <zorder>groupBox</zorder>
+  <zorder>label_3</zorder>
+  <zorder>layoutWidget</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

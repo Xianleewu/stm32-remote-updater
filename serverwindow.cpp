@@ -9,6 +9,9 @@ ServerWindow::ServerWindow(QWidget *parent) :
     this->setWindowTitle(tr("STM32 Remote Update Server"));
 
     mTcpServer = new QTcpServer(this);
+    assert(mTcpServer);
+
+    connect(mTcpServer, SIGNAL(newConnection()), this, SLOT(new_client_request()));
 }
 
 ServerWindow::~ServerWindow()
@@ -23,11 +26,6 @@ void ServerWindow::mousePressEvent(QMouseEvent *event) {
 
 void ServerWindow::mouseMoveEvent(QMouseEvent *event) {
     move(event->globalX()- m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
-}
-
-void ServerWindow::on_pushButton_connect_clicked()
-{
-
 }
 
 void ServerWindow::on_pushButton_browser_clicked()
@@ -52,4 +50,45 @@ void ServerWindow::on_pushButton_browser_clicked()
 void ServerWindow::on_pushButton_close_clicked()
 {
     this->close();
+}
+
+void ServerWindow::on_pushButton_min_clicked()
+{
+    this->showMinimized();
+}
+
+void ServerWindow::on_pushButton_bind_clicked()
+{
+    if(!mTcpServer->listen(QHostAddress::Any, ui->lineEdit_port->text().toInt()))
+    {
+        mTcpServer->close();
+        qDebug() << tr("listen error!");
+    }
+
+    ui->textBrowser->insertPlainText(tr("TCP server created!\n"));
+    ui->pushButton_bind->setFocus();
+}
+
+void ServerWindow::on_pushButton_clear_clicked()
+{
+    ui->textBrowser->clear();
+}
+
+void ServerWindow::new_client_request()
+{
+    QTcpSocket* new_client = mTcpServer->nextPendingConnection();
+
+    connect(new_client, SIGNAL(connected()), this, SLOT(new_client_connected()));
+    connect(new_client, SIGNAL(readyRead()), this, SLOT(got_new_data()));
+    connect(new_client, &QAbstractSocket::disconnected,new_client, &QObject::deleteLater);
+}
+
+void ServerWindow::new_client_connected()
+{
+    ui->textBrowser->insertPlainText(tr("New client connected!\n"));
+}
+
+void ServerWindow::got_new_data()
+{
+    ui->textBrowser->insertPlainText(tr("Got new data!\n"));
 }
