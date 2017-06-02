@@ -3,6 +3,7 @@
 
 int main(int argc, char *argv[])
 {
+    QCoreApplication::addLibraryPath(".");
     QApplication a(argc, argv);
     ServerWindow w;
 

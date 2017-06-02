@@ -9,6 +9,9 @@
 #include <QtMsgHandler>
 #include <QMouseEvent>
 #include <assert.h>
+#include <QFile>
+
+#define FILE_BLOCK_SIZE (1024)
 
 namespace Ui {
 class ServerWindow;
@@ -24,11 +27,17 @@ public:
 private:
     QTcpServer* mTcpServer;
     QTcpSocket* mTcpSocket;
+    QFile* mFile;
+
+    quint64 mFileSize;
+    quint64 mFileSent;
 
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     int m_nMouseClick_X_Coordinate;
     int m_nMouseClick_Y_Coordinate;
+
+    bool mFinished;
 
 private slots:
     void on_pushButton_browser_clicked();
@@ -46,6 +55,16 @@ private slots:
     void new_client_connected();
 
     void got_new_data();
+
+    void on_pushButton_clear_in_clicked();
+
+    void on_pushButton_send_clicked();
+
+    void on_socket_wirten(qint64);
+
+    void on_pushButton_send_file_clicked();
+
+    void on_pushButton_update_clicked();
 
 private:
     Ui::ServerWindow *ui;

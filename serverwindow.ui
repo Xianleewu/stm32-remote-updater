@@ -1405,7 +1405,7 @@ QDateEdit::down-arrow:focus
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -1416,14 +1416,14 @@ QDateEdit::down-arrow:focus
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QLineEdit" name="lineEdit_ip_2">
+      <widget class="QLineEdit" name="lineEdit_out">
        <property name="text">
         <string>update</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_clear_3">
+      <widget class="QPushButton" name="pushButton_send">
        <property name="text">
         <string>Send</string>
        </property>
@@ -1431,7 +1431,7 @@ QDateEdit::down-arrow:focus
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -1449,7 +1449,7 @@ QDateEdit::down-arrow:focus
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_clear_2">
+      <widget class="QPushButton" name="pushButton_clear_in">
        <property name="text">
         <string>Clear Input</string>
        </property>
@@ -1459,12 +1459,10 @@ QDateEdit::down-arrow:focus
    </widget>
    <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
+   <zorder>layoutWidget</zorder>
+   <zorder>layoutWidget</zorder>
    <zorder>pushButton_bind</zorder>
    <zorder>textBrowser</zorder>
-   <zorder>pushButton_clear</zorder>
-   <zorder>lineEdit_ip_2</zorder>
-   <zorder>pushButton_clear_2</zorder>
-   <zorder>pushButton_clear_3</zorder>
   </widget>
   <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
@@ -1516,7 +1514,7 @@ QDateEdit::down-arrow:focus
      <string>Browser</string>
     </property>
    </widget>
-   <widget class="QProgressBar" name="progressBar">
+   <widget class="QProgressBar" name="progressBar_tcp">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -1553,7 +1551,7 @@ QDateEdit::down-arrow:focus
      </property>
     </item>
    </widget>
-   <widget class="QPushButton" name="pushButton_browser_2">
+   <widget class="QPushButton" name="pushButton_disconnect">
     <property name="geometry">
      <rect>
       <x>270</x>
@@ -1566,7 +1564,7 @@ QDateEdit::down-arrow:focus
      <string>DisConnect</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -1577,7 +1575,20 @@ QDateEdit::down-arrow:focus
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="pushButton_send_file">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>SendFile</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_update">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -1590,7 +1601,7 @@ QDateEdit::down-arrow:focus
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="pushButton_loader">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -1603,7 +1614,7 @@ QDateEdit::down-arrow:focus
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_4">
+      <widget class="QPushButton" name="pushButton_app">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -1618,27 +1629,11 @@ QDateEdit::down-arrow:focus
     </layout>
    </widget>
   </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>330</x>
-     <y>300</y>
-     <width>121</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://softhardware.taobao.com&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#00a0ff;&quot;&gt;嵌入式GPRS远程升级&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-   <property name="openExternalLinks">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>500</x>
-     <y>290</y>
+     <y>320</y>
      <width>141</width>
      <height>31</height>
     </rect>
@@ -1669,10 +1664,39 @@ QDateEdit::down-arrow:focus
     </item>
    </layout>
   </widget>
+  <widget class="QGroupBox" name="groupBox_3">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>200</y>
+     <width>361</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Info</string>
+   </property>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>50</y>
+      <width>121</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://softhardware.taobao.com&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#00a0ff;&quot;&gt;嵌入式GPRS远程升级&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="openExternalLinks">
+     <bool>true</bool>
+    </property>
+   </widget>
+  </widget>
   <zorder>groupBox_2</zorder>
   <zorder>groupBox</zorder>
-  <zorder>label_3</zorder>
   <zorder>layoutWidget</zorder>
+  <zorder>groupBox_3</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

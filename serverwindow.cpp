@@ -8,8 +8,16 @@ ServerWindow::ServerWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle(tr("STM32 Remote Update Server"));
 
+    mFile = NULL;
+    mFinished = true;
+    mTcpSocket = NULL;
+    mFileSize = 0;
+    mFileSent = 0;
+
     mTcpServer = new QTcpServer(this);
-    assert(mTcpServer);
+    ui->progressBar_tcp->setMaximum(100);
+    ui->progressBar_tcp->setMinimum(0);
+    ui->progressBar_tcp->setValue(0);
 
     connect(mTcpServer, SIGNAL(newConnection()), this, SLOT(new_client_request()));
 }
@@ -63,10 +71,11 @@ void ServerWindow::on_pushButton_bind_clicked()
     {
         mTcpServer->close();
         qDebug() << tr("listen error!");
+        return;
     }
 
+    ui->pushButton_bind->setEnabled(false);
     ui->textBrowser->insertPlainText(tr("TCP server created!\n"));
-    ui->pushButton_bind->setFocus();
 }
 
 void ServerWindow::on_pushButton_clear_clicked()
@@ -76,11 +85,12 @@ void ServerWindow::on_pushButton_clear_clicked()
 
 void ServerWindow::new_client_request()
 {
-    QTcpSocket* new_client = mTcpServer->nextPendingConnection();
+    mTcpSocket = mTcpServer->nextPendingConnection();
 
-    connect(new_client, SIGNAL(connected()), this, SLOT(new_client_connected()));
-    connect(new_client, SIGNAL(readyRead()), this, SLOT(got_new_data()));
-    connect(new_client, &QAbstractSocket::disconnected,new_client, &QObject::deleteLater);
+    connect(mTcpSocket, SIGNAL(connected()), this, SLOT(new_client_connected()));
+    connect(mTcpSocket, SIGNAL(readyRead()), this, SLOT(got_new_data()));
+    connect(mTcpSocket, SIGNAL(disconnected()), mTcpSocket, SLOT(deleteLater()));
+    connect(mTcpSocket, SIGNAL(bytesWritten(qint64)), this, SLOT(on_socket_wirten(qint64)));
 }
 
 void ServerWindow::new_client_connected()
@@ -90,5 +100,76 @@ void ServerWindow::new_client_connected()
 
 void ServerWindow::got_new_data()
 {
-    ui->textBrowser->insertPlainText(tr("Got new data!\n"));
+    QString res;
+    res += mTcpSocket->readAll();
+    ui->textBrowser->insertPlainText(res);
+}
+
+void ServerWindow::on_pushButton_clear_in_clicked()
+{
+    ui->lineEdit_out->clear();
+}
+
+void ServerWindow::on_pushButton_send_clicked()
+{
+    if(!mTcpSocket) {
+        ui->textBrowser->insertPlainText(tr("No client yet!!!\n"));
+    } else {
+        QTextStream tOutStream(mTcpSocket);
+        tOutStream << ui->lineEdit_out->text();
+    }
+}
+
+void ServerWindow::on_socket_wirten(qint64)
+{
+    if(mFinished) {
+        return;
+    }
+
+    if(!mTcpSocket) {
+        ui->textBrowser->insertPlainText(tr("No client yet!\n"));
+        return;
+    }
+
+    if(!mFile) {
+        ui->textBrowser->insertPlainText(tr("No client yet!\n"));
+        return;
+    }
+
+    char tFileBuf[FILE_BLOCK_SIZE] = {0};
+    int readLen =  mFile->read(tFileBuf, FILE_BLOCK_SIZE);
+    if(readLen != FILE_BLOCK_SIZE) {
+        mFinished = true;
+        ui->progressBar_tcp->setValue(100);
+    }
+
+    mTcpSocket->write(tFileBuf, readLen);
+
+    mFileSent += readLen;
+    ui->progressBar_tcp->setValue(100 * (mFileSent/mFileSize));
+}
+
+void ServerWindow::on_pushButton_send_file_clicked()
+{
+    mFile = new QFile(ui->lineEdit_file->text());
+    if(!(mFile->open(QFile::ReadOnly))){
+        ui->textBrowser->insertPlainText(tr("Please input file path!\n"));
+    } else {
+        ui->progressBar_tcp->setValue(0);
+        ui->textBrowser->insertPlainText(tr("Successed to open update file!\n"));
+        mFinished = false;
+        mFileSize = mFile->size();
+        mFileSent = 0;
+        on_socket_wirten(0);
+    }
+}
+
+void ServerWindow::on_pushButton_update_clicked()
+{
+    if(!mTcpSocket) {
+        ui->textBrowser->insertPlainText(tr("No client yet!!!\n"));
+    } else {
+        QTextStream tOutStream(mTcpSocket);
+        tOutStream << tr("update");
+    }
 }
