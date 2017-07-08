@@ -13,6 +13,7 @@ ServerWindow::ServerWindow(QWidget *parent) :
     mTcpSocket = NULL;
     mFileSize = 0;
     mFileSent = 0;
+    mUpdateCmd = tr("select file first");
 
     mTcpServer = new QTcpServer(this);
     ui->progressBar_tcp->setMaximum(100);
@@ -36,6 +37,35 @@ void ServerWindow::mouseMoveEvent(QMouseEvent *event) {
     move(event->globalX()- m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
 }
 
+void ServerWindow::generateUpdateCmd(QString filepath)
+{
+    QFile file(filepath);
+    if(!file.open(QIODevice::ReadOnly)) {
+        qDebug()<<tr("Failed to open file");
+        return;
+    }
+
+    QByteArray fileByte = file.readAll();
+    QString md5 = QString(QCryptographicHash::hash(fileByte, QCryptographicHash::Md5).toHex());
+    qDebug()<<md5;
+
+    QJsonObject json;
+    json.insert("cmd", QString("update"));
+    json.insert("url", ui->lineEdit_FileUrl->text());
+    json.insert("md5", md5);
+
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray byte_array = document.toJson(QJsonDocument::Compact);
+    mUpdateCmd = QString(byte_array);
+    ui->lineEdit_updatecmd->setText(mUpdateCmd);
+    ui->lineEdit_updatecmd->show();
+
+    qDebug()<<mUpdateCmd;
+
+    file.close();
+}
+
 void ServerWindow::on_pushButton_browser_clicked()
 {
     QFileDialog* tFileDialog = new QFileDialog(this);
@@ -47,6 +77,7 @@ void ServerWindow::on_pushButton_browser_clicked()
 
     if(tFileDialog->exec() == QDialog::Accepted) {
         QString path = tFileDialog->selectedFiles()[0];
+        generateUpdateCmd(path);
         qDebug() << path;
         ui->lineEdit_file->setText(path);
         ui->lineEdit_file->show();

@@ -6,8 +6,11 @@
 #include <QTcpSocket>
 #include <QTcpServer>
 #include <QDebug>
+#include <QCryptographicHash>
 #include <QtMsgHandler>
 #include <QMouseEvent>
+#include <QJsonObject>
+#include <QJsonDocument>
 #include <assert.h>
 #include <QFile>
 
@@ -29,6 +32,8 @@ private:
     QTcpSocket* mTcpSocket;
     QFile* mFile;
 
+    QString mUpdateCmd;
+
     quint64 mFileSize;
     quint64 mFileSent;
 
@@ -36,6 +41,8 @@ private:
     void mouseMoveEvent(QMouseEvent *event);
     int m_nMouseClick_X_Coordinate;
     int m_nMouseClick_Y_Coordinate;
+
+    void generateUpdateCmd(QString filepath);
 
     bool mFinished;
 

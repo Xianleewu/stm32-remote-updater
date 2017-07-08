@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>651</width>
+    <width>650</width>
     <height>369</height>
    </rect>
   </property>
@@ -1468,57 +1468,19 @@ QDateEdit::down-arrow:focus
    <property name="geometry">
     <rect>
      <x>280</x>
-     <y>0</y>
+     <y>150</y>
      <width>361</width>
-     <height>191</height>
+     <height>151</height>
     </rect>
    </property>
    <property name="title">
     <string>Client</string>
    </property>
-   <widget class="QLineEdit" name="lineEdit_file">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>70</y>
-      <width>251</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>16777215</width>
-      <height>40</height>
-     </size>
-    </property>
-    <property name="text">
-     <string>userapp.bin</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_browser">
-    <property name="geometry">
-     <rect>
-      <x>270</x>
-      <y>70</y>
-      <width>81</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Browser</string>
-    </property>
-   </widget>
    <widget class="QProgressBar" name="progressBar_tcp">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>160</y>
+      <y>120</y>
       <width>341</width>
       <height>16</height>
      </rect>
@@ -1568,7 +1530,7 @@ QDateEdit::down-arrow:focus
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>110</y>
+      <y>70</y>
       <width>341</width>
       <height>41</height>
      </rect>
@@ -1664,39 +1626,141 @@ QDateEdit::down-arrow:focus
     </item>
    </layout>
   </widget>
-  <widget class="QGroupBox" name="groupBox_3">
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>330</y>
+     <width>121</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://softhardware.taobao.com&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#00a0ff;&quot;&gt;嵌入式GPRS远程升级&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="openExternalLinks">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_FileServer">
    <property name="geometry">
     <rect>
      <x>280</x>
-     <y>200</y>
+     <y>-1</y>
      <width>361</width>
-     <height>101</height>
+     <height>151</height>
     </rect>
    </property>
    <property name="title">
-    <string>Info</string>
+    <string>FileServer</string>
    </property>
-   <widget class="QLabel" name="label_3">
+   <widget class="QPushButton" name="pushButton_browser">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>50</y>
-      <width>121</width>
-      <height>16</height>
+      <x>270</x>
+      <y>70</y>
+      <width>81</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://softhardware.taobao.com&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#00a0ff;&quot;&gt;嵌入式GPRS远程升级&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>Browser</string>
     </property>
-    <property name="openExternalLinks">
-     <bool>true</bool>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_file">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>251</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>40</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>userapp.bin</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_updatecmd">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>341</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>40</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>{cmd:&quot;update&quot;,url:&quot;http://www.update.com/userapp.bin&quot;,md5:&quot;01234567890123456789012345678901&quot;}</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_FileUrl">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>30</y>
+      <width>271</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>40</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>http://www.update.com/userapp.bin</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>61</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;固件URL：&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>
+  <zorder>groupBox_FileServer</zorder>
   <zorder>groupBox_2</zorder>
   <zorder>groupBox</zorder>
   <zorder>layoutWidget</zorder>
-  <zorder>groupBox_3</zorder>
+  <zorder>label_3</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
