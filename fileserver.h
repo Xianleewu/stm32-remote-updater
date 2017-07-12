@@ -3,6 +3,10 @@
 
 #include <QByteArray>
 #include <qmhdcontroller.h>
+#include <qmhdrequest.h>
+#include <qmhdresponse.h>
+#include <qmhdrouter.h>
+#include <qmhdserver.h>
 
 class FileServer : public QMHDController
 {
@@ -13,9 +17,14 @@ public:
     FileServer(QObject* parent = NULL);
     ~FileServer();
 
-    int setFile(QString file);
+    static FileServer* startServer(int port);
+    int stopServer();
+    int setFile(QString* file);
 private:
-    QByteArray fileByte;
+    QMHDServer* mServer;
+    QMHDRouter* mRouter;
+
+    QString* mFilePath;
 
 public slots:
     void sendFile();

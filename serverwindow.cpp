@@ -10,6 +10,7 @@ ServerWindow::ServerWindow(QWidget *parent) :
     this->setWindowTitle(tr("STM32 Remote Update Server"));
 
     mFile = NULL;
+    mFilerServer = NULL;
     mFinished = true;
     mTcpSocket = NULL;
     mFileSize = 0;
@@ -20,6 +21,8 @@ ServerWindow::ServerWindow(QWidget *parent) :
     ui->progressBar_tcp->setMaximum(100);
     ui->progressBar_tcp->setMinimum(0);
     ui->progressBar_tcp->setValue(0);
+
+    mFilerServer = FileServer::startServer(8181);
 
     connect(mTcpServer, SIGNAL(newConnection()), this, SLOT(new_client_request()));
 }
@@ -94,6 +97,9 @@ void ServerWindow::on_pushButton_browser_clicked()
 
     if(tFileDialog->exec() == QDialog::Accepted) {
         QString path = tFileDialog->selectedFiles()[0];
+
+        mFilerServer->setFile(&path);
+
         generateUpdateCmd(path);
         qDebug() << path;
         ui->lineEdit_file->setText(path);

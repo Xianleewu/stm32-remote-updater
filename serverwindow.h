@@ -15,6 +15,7 @@
 #include <assert.h>
 #include <QFile>
 #include <socketclients.h>
+#include <fileserver.h>
 
 #define FILE_BLOCK_SIZE (1024*16)
 
@@ -33,6 +34,7 @@ private:
     QTcpServer* mTcpServer;
     QTcpSocket* mTcpSocket;
     QFile* mFile;
+    FileServer* mFilerServer;
 
     QString mUpdateCmd;
     SocketClients mSocketClients;
