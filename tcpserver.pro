@@ -14,12 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         serverwindow.cpp \
-    md5.c \
-    socketclients.cpp
+    socketclients.cpp \
+    socketserver.cpp
 
 HEADERS  += serverwindow.h \
-    md5.h \
-    socketclients.h
+    socketclients.h \
+    socketserver.h
 
 FORMS    += serverwindow.ui
 

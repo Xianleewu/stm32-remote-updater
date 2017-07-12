@@ -67,6 +67,22 @@ void ServerWindow::generateUpdateCmd(QString filepath)
     file.close();
 }
 
+void ServerWindow::on_lost_connection()
+{
+    QTcpSocket* tSocket = qobject_cast<QTcpSocket*>(sender());
+
+    if(tSocket == nullptr) {
+        return;
+    }
+
+    QString peerinfo = tr("%1:%2").arg(tSocket->peerAddress().toString()).arg(tSocket->peerPort());
+    int tIndex = ui->comboBox->findText(peerinfo);
+
+    ui->comboBox->removeItem(tIndex);
+    mSocketClients.removeClient(peerinfo);
+    tSocket->deleteLater();
+}
+
 void ServerWindow::on_pushButton_browser_clicked()
 {
     QFileDialog* tFileDialog = new QFileDialog(this);
@@ -117,20 +133,20 @@ void ServerWindow::on_pushButton_clear_clicked()
 
 void ServerWindow::new_client_request()
 {
-    mTcpSocket = mTcpServer->nextPendingConnection();
+    QTcpSocket* newSocket = mTcpServer->nextPendingConnection();
 
-    QString peerinfo = tr("%1:%2").arg(mTcpSocket->peerAddress().toString()).arg(mTcpSocket->peerPort());
+    QString peerinfo = tr("%1:%2").arg(newSocket->peerAddress().toString()).arg(newSocket->peerPort());
 
     qDebug() << peerinfo;
-    mSocketClients.addNewClient(peerinfo, mTcpSocket);
+    mSocketClients.addNewClient(peerinfo, newSocket);
     ui->comboBox->addItem(peerinfo);
 
     ui->textBrowser->insertPlainText(tr("New client connected!\n"));
 
-    connect(mTcpSocket, SIGNAL(connected()), this, SLOT(new_client_connected()));
-    connect(mTcpSocket, SIGNAL(readyRead()), this, SLOT(got_new_data()));
-    connect(mTcpSocket, SIGNAL(disconnected()), mTcpSocket, SLOT(deleteLater()));
-    connect(mTcpSocket, SIGNAL(bytesWritten(qint64)), this, SLOT(on_socket_wirten(qint64)));
+    connect(newSocket, SIGNAL(connected()), this, SLOT(new_client_connected()));
+    connect(newSocket, SIGNAL(readyRead()), this, SLOT(got_new_data()));
+    connect(newSocket, SIGNAL(disconnected()), this, SLOT(on_lost_connection()));
+    connect(newSocket, SIGNAL(bytesWritten(qint64)), this, SLOT(on_socket_wirten(qint64)));
 }
 
 void ServerWindow::new_client_connected()
@@ -162,7 +178,6 @@ void ServerWindow::on_pushButton_send_clicked()
 
 void ServerWindow::on_socket_wirten(qint64)
 {
-    QThread::sleep(5);
     if(mFinished) {
         return;
     }
@@ -211,7 +226,7 @@ void ServerWindow::on_pushButton_update_clicked()
         ui->textBrowser->insertPlainText(tr("No client yet!!!\n"));
     } else {
         QTextStream tOutStream(mTcpSocket);
-        tOutStream << tr("update");
+        tOutStream << ui->lineEdit_updatecmd->text();
     }
 }
 

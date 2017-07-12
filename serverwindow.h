@@ -50,6 +50,8 @@ private:
     bool mFinished;
 
 private slots:
+    void on_lost_connection();
+
     void on_pushButton_browser_clicked();
 
     void on_pushButton_close_clicked();
