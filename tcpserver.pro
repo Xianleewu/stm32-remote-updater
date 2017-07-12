@@ -13,9 +13,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        serverwindow.cpp
+        serverwindow.cpp \
+    md5.c \
+    socketclients.cpp
 
-HEADERS  += serverwindow.h
+HEADERS  += serverwindow.h \
+    md5.h \
+    socketclients.h
 
 FORMS    += serverwindow.ui
 

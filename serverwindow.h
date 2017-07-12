@@ -7,14 +7,16 @@
 #include <QTcpServer>
 #include <QDebug>
 #include <QCryptographicHash>
+#include <QHash>
 #include <QtMsgHandler>
 #include <QMouseEvent>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <assert.h>
 #include <QFile>
+#include <socketclients.h>
 
-#define FILE_BLOCK_SIZE (1024)
+#define FILE_BLOCK_SIZE (1024*16)
 
 namespace Ui {
 class ServerWindow;
@@ -33,6 +35,7 @@ private:
     QFile* mFile;
 
     QString mUpdateCmd;
+    SocketClients mSocketClients;
 
     quint64 mFileSize;
     quint64 mFileSent;
@@ -72,6 +75,8 @@ private slots:
     void on_pushButton_send_file_clicked();
 
     void on_pushButton_update_clicked();
+
+    void on_comboBox_currentIndexChanged(const QString &arg1);
 
 private:
     Ui::ServerWindow *ui;

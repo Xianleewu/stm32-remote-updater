@@ -1,5 +1,6 @@
 #include "serverwindow.h"
 #include "ui_serverwindow.h"
+#include "QThread"
 
 ServerWindow::ServerWindow(QWidget *parent) :
     QWidget(parent),
@@ -118,6 +119,14 @@ void ServerWindow::new_client_request()
 {
     mTcpSocket = mTcpServer->nextPendingConnection();
 
+    QString peerinfo = tr("%1:%2").arg(mTcpSocket->peerAddress().toString()).arg(mTcpSocket->peerPort());
+
+    qDebug() << peerinfo;
+    mSocketClients.addNewClient(peerinfo, mTcpSocket);
+    ui->comboBox->addItem(peerinfo);
+
+    ui->textBrowser->insertPlainText(tr("New client connected!\n"));
+
     connect(mTcpSocket, SIGNAL(connected()), this, SLOT(new_client_connected()));
     connect(mTcpSocket, SIGNAL(readyRead()), this, SLOT(got_new_data()));
     connect(mTcpSocket, SIGNAL(disconnected()), mTcpSocket, SLOT(deleteLater()));
@@ -153,6 +162,7 @@ void ServerWindow::on_pushButton_send_clicked()
 
 void ServerWindow::on_socket_wirten(qint64)
 {
+    QThread::sleep(5);
     if(mFinished) {
         return;
     }
@@ -202,5 +212,16 @@ void ServerWindow::on_pushButton_update_clicked()
     } else {
         QTextStream tOutStream(mTcpSocket);
         tOutStream << tr("update");
+    }
+}
+
+void ServerWindow::on_comboBox_currentIndexChanged(const QString &arg1)
+{
+    qDebug() << arg1;
+    mTcpSocket = mSocketClients.getClientFromInfo(arg1);
+    if(mTcpSocket != nullptr) {
+        qDebug() << mTcpSocket;
+    } else {
+        qDebug() << tr("No clients yet");
     }
 }
