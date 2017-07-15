@@ -12,6 +12,7 @@
 #include <QMouseEvent>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QMessageBox>
 #include <assert.h>
 #include <QFile>
 #include <socketclients.h>
@@ -53,6 +54,9 @@ private:
 
     void disconnectSocket(QTcpSocket* socket);
     void generateUpdateCmd(QString cmd, QString filepath);
+
+    void showMessageNoFile();
+    void showMessageNoClient();
 
     bool mFinished;
 

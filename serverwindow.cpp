@@ -72,6 +72,20 @@ void ServerWindow::generateUpdateCmd(QString cmd, QString filepath)
     }
 }
 
+void ServerWindow::showMessageNoFile()
+{
+    QMessageBox::warning(NULL, "warning",
+                         "Please set update file first!",
+                         QMessageBox::Yes, QMessageBox::Yes);
+}
+
+void ServerWindow::showMessageNoClient()
+{
+    QMessageBox::warning(NULL, "warning",
+                         "Please select a valid client",
+                         QMessageBox::Yes, QMessageBox::Yes);
+}
+
 void ServerWindow::disconnectSocket(QTcpSocket* socket)
 {
     if(socket == nullptr) {
@@ -184,7 +198,7 @@ void ServerWindow::on_pushButton_clear_in_clicked()
 void ServerWindow::on_pushButton_send_clicked()
 {
     if(!mTcpSocket) {
-        ui->textBrowser->insertPlainText(tr("Please select a valid client\n"));
+        showMessageNoClient();
     } else {
         QTextStream tOutStream(mTcpSocket);
         tOutStream << ui->lineEdit_out->text();
@@ -198,12 +212,12 @@ void ServerWindow::on_socket_wirten(qint64)
     }
 
     if(!mTcpSocket) {
-        ui->textBrowser->insertPlainText(tr("Please select a valid client\n"));
+        showMessageNoClient();
         return;
     }
 
     if(!mFile) {
-        ui->textBrowser->insertPlainText(tr("No update file yet!\n"));
+        showMessageNoFile();
         return;
     }
 
@@ -224,7 +238,7 @@ void ServerWindow::on_pushButton_send_file_clicked()
 {
     mFile = new QFile(ui->lineEdit_file->text());
     if(!(mFile->open(QFile::ReadOnly))){
-        ui->textBrowser->insertPlainText(tr("Please input file path!\n"));
+        ui->textBrowser->insertPlainText(tr("open input file error!\n"));
     } else {
         ui->progressBar_tcp->setValue(0);
         ui->textBrowser->insertPlainText(tr("Successed to open update file!\n"));
@@ -238,7 +252,7 @@ void ServerWindow::on_pushButton_send_file_clicked()
 void ServerWindow::on_pushButton_update_clicked()
 {
     if(!mTcpSocket) {
-        ui->textBrowser->insertPlainText(tr("Please select a valid client\n"));
+        showMessageNoClient();
     } else {
         QTextStream tOutStream(mTcpSocket);
         tOutStream << ui->lineEdit_updatecmd->text();
@@ -252,7 +266,7 @@ void ServerWindow::on_comboBox_currentIndexChanged(const QString &arg1)
     if(mTcpSocket != nullptr) {
         qDebug() << mTcpSocket;
     } else {
-        qDebug() << tr("No clients yet");
+        qDebug() << tr("No a valid client");
     }
 }
 
@@ -261,7 +275,7 @@ void ServerWindow::on_pushButton_loader_clicked()
     generateUpdateCmd(CMD_TYPE_LOADER, FILE_NAME_NONE);
 
     if(!mTcpSocket) {
-        ui->textBrowser->insertPlainText(tr("Please select a valid client\n"));
+        showMessageNoClient();
     } else {
         QTextStream tOutStream(mTcpSocket);
         tOutStream << mUpdateCmd;
@@ -273,7 +287,7 @@ void ServerWindow::on_pushButton_app_clicked()
     generateUpdateCmd(CMD_TYPE_RUNAPP, FILE_NAME_NONE);
 
     if(!mTcpSocket) {
-        ui->textBrowser->insertPlainText(tr("Please select a valid client\n"));
+        showMessageNoClient();
     } else {
         QTextStream tOutStream(mTcpSocket);
         tOutStream << mUpdateCmd;
