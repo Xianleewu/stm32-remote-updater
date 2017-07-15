@@ -18,6 +18,10 @@
 #include <fileserver.h>
 
 #define FILE_BLOCK_SIZE (1024*16)
+#define FILE_NAME_NONE  ""
+#define CMD_TYPE_UPDATE "update"
+#define CMD_TYPE_RUNAPP "runapp"
+#define CMD_TYPE_LOADER "loader"
 
 namespace Ui {
 class ServerWindow;
@@ -47,7 +51,8 @@ private:
     int m_nMouseClick_X_Coordinate;
     int m_nMouseClick_Y_Coordinate;
 
-    void generateUpdateCmd(QString filepath);
+    void disconnectSocket(QTcpSocket* socket);
+    void generateUpdateCmd(QString cmd, QString filepath);
 
     bool mFinished;
 
@@ -81,6 +86,12 @@ private slots:
     void on_pushButton_update_clicked();
 
     void on_comboBox_currentIndexChanged(const QString &arg1);
+
+    void on_pushButton_loader_clicked();
+
+    void on_pushButton_app_clicked();
+
+    void on_pushButton_disconnect_clicked();
 
 private:
     Ui::ServerWindow *ui;

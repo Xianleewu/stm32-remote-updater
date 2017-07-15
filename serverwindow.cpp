@@ -43,49 +43,53 @@ void ServerWindow::mouseMoveEvent(QMouseEvent *event) {
     move(event->globalX()- m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
 }
 
-void ServerWindow::generateUpdateCmd(QString filepath)
+void ServerWindow::generateUpdateCmd(QString cmd, QString filepath)
 {
-    QFile file(filepath);
-    if(!file.open(QIODevice::ReadOnly)) {
-        qDebug()<<tr("Failed to open file");
-        return;
-    }
-
-    QByteArray fileByte = file.readAll();
-    QString md5 = QString(QCryptographicHash::hash(fileByte, QCryptographicHash::Md5).toHex());
-    qDebug()<<md5;
-
     QJsonObject json;
-    json.insert("cmd", QString("update"));
-    json.insert("url", ui->lineEdit_FileUrl->text());
-    json.insert("md5", md5);
+    json.insert(QString("cmd"), QString(cmd));
+
+    QFile file(filepath);
+    if(filepath.isEmpty() || !file.open(QIODevice::ReadOnly)) {
+        json.insert("url", "NONE");
+        json.insert("md5", "NONE");
+    } else {
+        QByteArray fileByte = file.readAll();
+        QString md5 = QString(QCryptographicHash::hash(fileByte, QCryptographicHash::Md5).toHex());
+        file.close();
+
+        json.insert("url", ui->lineEdit_FileUrl->text());
+        json.insert("md5", md5);
+    }
 
     QJsonDocument document;
     document.setObject(json);
     QByteArray byte_array = document.toJson(QJsonDocument::Compact);
     mUpdateCmd = QString(byte_array);
-    ui->lineEdit_updatecmd->setText(mUpdateCmd);
-    ui->lineEdit_updatecmd->show();
 
-    qDebug()<<mUpdateCmd;
+    if(0 == QString::compare(QString(CMD_TYPE_UPDATE), cmd)) {
+        ui->lineEdit_updatecmd->setText(mUpdateCmd);
+        ui->lineEdit_updatecmd->show();
+    }
+}
 
-    file.close();
+void ServerWindow::disconnectSocket(QTcpSocket* socket)
+{
+    if(socket == nullptr) {
+        return;
+    }
+
+    QString peerinfo = tr("%1:%2").arg(socket->peerAddress().toString()).arg(socket->peerPort());
+    int tIndex = ui->comboBox->findText(peerinfo);
+
+    ui->comboBox->removeItem(tIndex);
+    mSocketClients.removeClient(peerinfo);
+    socket->deleteLater();
 }
 
 void ServerWindow::on_lost_connection()
 {
     QTcpSocket* tSocket = qobject_cast<QTcpSocket*>(sender());
-
-    if(tSocket == nullptr) {
-        return;
-    }
-
-    QString peerinfo = tr("%1:%2").arg(tSocket->peerAddress().toString()).arg(tSocket->peerPort());
-    int tIndex = ui->comboBox->findText(peerinfo);
-
-    ui->comboBox->removeItem(tIndex);
-    mSocketClients.removeClient(peerinfo);
-    tSocket->deleteLater();
+    disconnectSocket(tSocket);
 }
 
 void ServerWindow::on_pushButton_browser_clicked()
@@ -102,7 +106,7 @@ void ServerWindow::on_pushButton_browser_clicked()
 
         mFilerServer->setFile(path);
 
-        generateUpdateCmd(path);
+        generateUpdateCmd(CMD_TYPE_UPDATE, path);
         qDebug() << path;
         ui->lineEdit_file->setText(path);
         ui->lineEdit_file->show();
@@ -164,9 +168,12 @@ void ServerWindow::new_client_connected()
 
 void ServerWindow::got_new_data()
 {
+    QTcpSocket* tSocket = qobject_cast<QTcpSocket*>(sender());
     QString res;
-    res += mTcpSocket->readAll();
-    ui->textBrowser->insertPlainText(res);
+
+    res += tSocket->readAll();
+    ui->textBrowser->moveCursor(QTextCursor::End);
+    ui->textBrowser->textCursor().insertText(res);
 }
 
 void ServerWindow::on_pushButton_clear_in_clicked()
@@ -177,7 +184,7 @@ void ServerWindow::on_pushButton_clear_in_clicked()
 void ServerWindow::on_pushButton_send_clicked()
 {
     if(!mTcpSocket) {
-        ui->textBrowser->insertPlainText(tr("No client yet!!!\n"));
+        ui->textBrowser->insertPlainText(tr("Please select a valid client\n"));
     } else {
         QTextStream tOutStream(mTcpSocket);
         tOutStream << ui->lineEdit_out->text();
@@ -191,12 +198,12 @@ void ServerWindow::on_socket_wirten(qint64)
     }
 
     if(!mTcpSocket) {
-        ui->textBrowser->insertPlainText(tr("No client yet!\n"));
+        ui->textBrowser->insertPlainText(tr("Please select a valid client\n"));
         return;
     }
 
     if(!mFile) {
-        ui->textBrowser->insertPlainText(tr("No client yet!\n"));
+        ui->textBrowser->insertPlainText(tr("No update file yet!\n"));
         return;
     }
 
@@ -231,7 +238,7 @@ void ServerWindow::on_pushButton_send_file_clicked()
 void ServerWindow::on_pushButton_update_clicked()
 {
     if(!mTcpSocket) {
-        ui->textBrowser->insertPlainText(tr("No client yet!!!\n"));
+        ui->textBrowser->insertPlainText(tr("Please select a valid client\n"));
     } else {
         QTextStream tOutStream(mTcpSocket);
         tOutStream << ui->lineEdit_updatecmd->text();
@@ -247,4 +254,33 @@ void ServerWindow::on_comboBox_currentIndexChanged(const QString &arg1)
     } else {
         qDebug() << tr("No clients yet");
     }
+}
+
+void ServerWindow::on_pushButton_loader_clicked()
+{
+    generateUpdateCmd(CMD_TYPE_LOADER, FILE_NAME_NONE);
+
+    if(!mTcpSocket) {
+        ui->textBrowser->insertPlainText(tr("Please select a valid client\n"));
+    } else {
+        QTextStream tOutStream(mTcpSocket);
+        tOutStream << mUpdateCmd;
+    }
+}
+
+void ServerWindow::on_pushButton_app_clicked()
+{
+    generateUpdateCmd(CMD_TYPE_RUNAPP, FILE_NAME_NONE);
+
+    if(!mTcpSocket) {
+        ui->textBrowser->insertPlainText(tr("Please select a valid client\n"));
+    } else {
+        QTextStream tOutStream(mTcpSocket);
+        tOutStream << mUpdateCmd;
+    }
+}
+
+void ServerWindow::on_pushButton_disconnect_clicked()
+{
+    disconnectSocket(mTcpSocket);
 }
