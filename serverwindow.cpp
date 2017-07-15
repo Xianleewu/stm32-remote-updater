@@ -22,7 +22,8 @@ ServerWindow::ServerWindow(QWidget *parent) :
     ui->progressBar_tcp->setMinimum(0);
     ui->progressBar_tcp->setValue(0);
 
-    mFilerServer = FileServer::startServer(8181);
+    mFilerServer = new FileServer();
+    mFilerServer->startServer(8181);
 
     connect(mTcpServer, SIGNAL(newConnection()), this, SLOT(new_client_request()));
 }
@@ -30,6 +31,7 @@ ServerWindow::ServerWindow(QWidget *parent) :
 ServerWindow::~ServerWindow()
 {
     delete ui;
+    delete mFilerServer;
 }
 
 void ServerWindow::mousePressEvent(QMouseEvent *event) {
@@ -93,12 +95,12 @@ void ServerWindow::on_pushButton_browser_clicked()
     tFileDialog->setAcceptMode(QFileDialog::AcceptOpen);
     tFileDialog->setFileMode(QFileDialog::AnyFile);
     tFileDialog->setViewMode(QFileDialog::Detail);
-    tFileDialog->setDirectory(".");
+    tFileDialog->setDirectory(QDir::currentPath());
 
     if(tFileDialog->exec() == QDialog::Accepted) {
         QString path = tFileDialog->selectedFiles()[0];
 
-        mFilerServer->setFile(&path);
+        mFilerServer->setFile(path);
 
         generateUpdateCmd(path);
         qDebug() << path;

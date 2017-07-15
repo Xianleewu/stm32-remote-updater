@@ -7,35 +7,35 @@
 #include <QCryptographicHash>
 #include "fileserver.h"
 
+QString FileServer::mFirmware("");
+
 FileServer::FileServer(QObject* parent)
     : QMHDController(parent)
 {
     mServer = NULL;
     mRouter = NULL;
-    mFilePath = NULL;
 }
 
 FileServer::~FileServer()
 {
-
+    stopServer();
 }
 
-FileServer *FileServer::startServer(int port)
+int FileServer::startServer(int port)
 {
-    QMHDServer* server = new QMHDServer(qApp);
-    QMHDRouter* router = new QMHDRouter(qApp);
-    FileServer* fileserver = new FileServer(router);
+    mServer = new QMHDServer(qApp);
+    mRouter = new QMHDRouter(qApp);
 
-    router->addRoute("GET", "/firmware.bin", fileserver, SLOT(sendFile()));
-    router->connect(server, &QMHDServer::newRequest,
-                    router, &QMHDRouter::processRequest,
+    mRouter->addRoute("GET", "/firmware.bin", this, SLOT(sendFile()));
+    mRouter->connect(mServer, &QMHDServer::newRequest,
+                    mRouter, &QMHDRouter::processRequest,
                     Qt::DirectConnection);
 
-    if (!server->listen(port)) {
+    if (!mServer->listen(port)) {
         qDebug()<<tr("Failed to create server");
     }
 
-    return fileserver;
+    return 0;
 }
 
 int FileServer::stopServer()
@@ -52,26 +52,39 @@ int FileServer::stopServer()
     return 0;
 }
 
-int FileServer::setFile(QString *filepath)
+int FileServer::setFile(QString filepath)
 {
-    mFilePath = filepath;
+    mMutex.lock();
+
+    mFirmware = filepath;
+
+    mMutex.unlock();
 
     return 0;
 }
 
 void FileServer::sendFile()
 {
-    QFile file(*mFilePath);
-    if(!file.open(QIODevice::ReadOnly)) {
-        qDebug()<<tr("Failed to open file:%1").arg(*mFilePath);
-        return;
+    mMutex.lock();
+
+    if(mFirmware.isEmpty()) {
+        qDebug()<<tr("Please set file path first!");
+        response()->setStatus(QMHD::HttpStatus::NotFound);
+        response()->send();
+    } else {
+        QFile file(mFirmware);
+        if(!file.open(QIODevice::ReadOnly)) {
+            qDebug()<<tr("Open file:%1 failed!").arg(mFirmware);
+            response()->setStatus(QMHD::HttpStatus::NotFound);
+            response()->send();
+        } else {
+            QByteArray fileByte = file.readAll();
+            file.close();
+            response()->setHeader("Content-Type", "application/octet-stream");
+            response()->setHeader("X-Thread-Id", QString::number((quint64) QThread::currentThreadId()));
+            response()->send(fileByte);
+        }
     }
 
-    QByteArray fileByte = file.readAll();
-
-    file.close();
-
-    response()->setHeader("Content-Type", "application/octet-stream");
-    response()->setHeader("X-Thread-Id", QString::number((quint64) QThread::currentThreadId()));
-    response()->send(fileByte);
+    mMutex.unlock();
 }

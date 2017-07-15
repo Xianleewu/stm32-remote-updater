@@ -2,6 +2,7 @@
 #define __FILE_SERVER_H__
 
 #include <QByteArray>
+#include <QMutex>
 #include <qmhdcontroller.h>
 #include <qmhdrequest.h>
 #include <qmhdresponse.h>
@@ -17,15 +18,16 @@ public:
     FileServer(QObject* parent = NULL);
     ~FileServer();
 
-    static FileServer* startServer(int port);
+    int startServer(int port);
     int stopServer();
-    int setFile(QString* file);
+    int setFile(QString file);
+    static QString mFirmware;
 private:
     QMHDServer* mServer;
     QMHDRouter* mRouter;
+    QMutex mMutex;
 
     QString* mFilePath;
-
 public slots:
     void sendFile();
 };
