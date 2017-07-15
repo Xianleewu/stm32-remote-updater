@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>650</width>
+    <width>658</width>
     <height>369</height>
    </rect>
   </property>
@@ -1626,22 +1626,6 @@ QDateEdit::down-arrow:focus
     </item>
    </layout>
   </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>330</y>
-     <width>121</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://softhardware.taobao.com&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#00a0ff;&quot;&gt;嵌入式GPRS远程升级&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-   <property name="openExternalLinks">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QGroupBox" name="groupBox_FileServer">
    <property name="geometry">
     <rect>
@@ -1756,11 +1740,42 @@ QDateEdit::down-arrow:focus
     </property>
    </widget>
   </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>310</y>
+     <width>181</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="textFormat">
+    <enum>Qt::RichText</enum>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="qdarkstyle/style.qrc">:/qss_icons/rc/logo.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>false</bool>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="openExternalLinks">
+    <bool>true</bool>
+   </property>
+   <property name="textInteractionFlags">
+    <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
+   </property>
+  </widget>
   <zorder>groupBox_FileServer</zorder>
   <zorder>groupBox_2</zorder>
   <zorder>groupBox</zorder>
   <zorder>layoutWidget</zorder>
-  <zorder>label_3</zorder>
+  <zorder>label_5</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
