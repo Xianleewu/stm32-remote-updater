@@ -54,6 +54,7 @@ private:
 
     void disconnectSocket(QTcpSocket* socket);
     void generateUpdateCmd(QString cmd, QString filepath);
+    int destroyHttpd();
 
     void showMessageNoFile();
     void showMessageNoClient();
@@ -96,6 +97,8 @@ private slots:
     void on_pushButton_app_clicked();
 
     void on_pushButton_disconnect_clicked();
+
+    void on_pushButton_httpd_clicked();
 
 private:
     Ui::ServerWindow *ui;

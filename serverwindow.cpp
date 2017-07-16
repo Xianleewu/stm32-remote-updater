@@ -22,16 +22,13 @@ ServerWindow::ServerWindow(QWidget *parent) :
     ui->progressBar_tcp->setMinimum(0);
     ui->progressBar_tcp->setValue(0);
 
-    mFilerServer = new FileServer();
-    mFilerServer->startServer(8181);
-
     connect(mTcpServer, SIGNAL(newConnection()), this, SLOT(new_client_request()));
 }
 
 ServerWindow::~ServerWindow()
 {
     delete ui;
-    delete mFilerServer;
+    destroyHttpd();
 }
 
 void ServerWindow::mousePressEvent(QMouseEvent *event) {
@@ -70,6 +67,18 @@ void ServerWindow::generateUpdateCmd(QString cmd, QString filepath)
         ui->lineEdit_updatecmd->setText(mUpdateCmd);
         ui->lineEdit_updatecmd->show();
     }
+}
+
+int ServerWindow::destroyHttpd()
+{
+    if(mFilerServer) {
+        mFilerServer->stopServer();
+        delete mFilerServer;
+        mFilerServer = NULL;
+        return 0;
+    }
+
+    return -1;
 }
 
 void ServerWindow::showMessageNoFile()
@@ -113,7 +122,7 @@ void ServerWindow::on_pushButton_browser_clicked()
     tFileDialog->setAcceptMode(QFileDialog::AcceptOpen);
     tFileDialog->setFileMode(QFileDialog::AnyFile);
     tFileDialog->setViewMode(QFileDialog::Detail);
-    tFileDialog->setDirectory(QDir::currentPath());
+    //tFileDialog->setDirectory(QDir::currentPath());
 
     if(tFileDialog->exec() == QDialog::Accepted) {
         QString path = tFileDialog->selectedFiles()[0];
@@ -297,4 +306,12 @@ void ServerWindow::on_pushButton_app_clicked()
 void ServerWindow::on_pushButton_disconnect_clicked()
 {
     disconnectSocket(mTcpSocket);
+}
+
+void ServerWindow::on_pushButton_httpd_clicked()
+{
+    if(0 != destroyHttpd()) {
+        mFilerServer = new FileServer();
+        mFilerServer->startServer(ui->lineEdit_HttpdPort->text().toInt());
+    }
 }

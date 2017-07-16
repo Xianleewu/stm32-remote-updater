@@ -1511,7 +1511,7 @@ QDateEdit::down-arrow:focus
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>230</x>
@@ -1542,7 +1542,7 @@ QDateEdit::down-arrow:focus
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_bind_2">
+      <widget class="QPushButton" name="pushButton_httpd">
        <property name="locale">
         <locale language="Chinese" country="China"/>
        </property>
@@ -1567,9 +1567,8 @@ QDateEdit::down-arrow:focus
    <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
-   <zorder>pushButton_bind</zorder>
+   <zorder>layoutWidget</zorder>
    <zorder>textBrowser</zorder>
-   <zorder>pushButton_bind_2</zorder>
   </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
@@ -1783,7 +1782,7 @@ QDateEdit::down-arrow:focus
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;升级命令：&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_FileUrl_2">
+   <widget class="QLineEdit" name="lineEdit_FileInfo">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -1830,7 +1829,7 @@ QDateEdit::down-arrow:focus
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;固件信息：&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -1873,7 +1872,7 @@ QDateEdit::down-arrow:focus
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
