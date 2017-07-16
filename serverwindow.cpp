@@ -150,15 +150,18 @@ void ServerWindow::on_pushButton_min_clicked()
 
 void ServerWindow::on_pushButton_bind_clicked()
 {
-    if(!mTcpServer->listen(QHostAddress::Any, ui->lineEdit_port->text().toInt()))
-    {
+    if(mTcpServer->isListening()) {
         mTcpServer->close();
-        qDebug() << tr("listen error!");
-        return;
+        ui->textBrowser->insertPlainText(tr("Update server closed!\n"));
+    } else {
+        if(!mTcpServer->listen(QHostAddress::Any, ui->lineEdit_port->text().toInt()))
+        {
+            mTcpServer->close();
+            qDebug() << tr("listen error!");
+            return;
+        }
+        ui->textBrowser->insertPlainText(tr("Update server created!\n"));
     }
-
-    ui->pushButton_bind->setEnabled(false);
-    ui->textBrowser->insertPlainText(tr("TCP server created!\n"));
 }
 
 void ServerWindow::on_pushButton_clear_clicked()

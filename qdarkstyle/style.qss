@@ -640,7 +640,7 @@ QComboBox
 }
 
 QPushButton:checked{
-    background-color: #76797C;
+    background-color: #3daee9;
     border-color: #6A6969;
 }
 
