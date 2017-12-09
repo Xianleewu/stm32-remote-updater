@@ -190,6 +190,7 @@ void ServerWindow::new_client_request()
     qDebug() << peerinfo;
     mSocketClients.addNewClient(peerinfo, newSocket);
     ui->comboBox->addItem(peerinfo);
+    ui->comboBox->setCurrentIndex(ui->comboBox->count() - 1);
 
     ui->textBrowser->insertPlainText(tr("New client connected!\n"));
 
