@@ -117,11 +117,23 @@ void ServerWindow::on_lost_connection()
 
 void ServerWindow::on_pushButton_browser_clicked()
 {
+    if (!mFilerServer) {
+        QMessageBox::warning(NULL, "warning",
+                             "Please open http server first",
+                             QMessageBox::Yes, QMessageBox::Yes);
+        return;
+    }
+
+    QStringList filters;
     QFileDialog* tFileDialog = new QFileDialog(this);
+
+    filters << "Binary files (*.bin)";
+
     tFileDialog->setWindowTitle(tr("Select update binary file"));
     tFileDialog->setAcceptMode(QFileDialog::AcceptOpen);
-    tFileDialog->setFileMode(QFileDialog::AnyFile);
+    tFileDialog->setFileMode(QFileDialog::ExistingFile);
     tFileDialog->setViewMode(QFileDialog::Detail);
+    tFileDialog->setNameFilters(filters);
     //tFileDialog->setDirectory(QDir::currentPath());
 
     if(tFileDialog->exec() == QDialog::Accepted) {
