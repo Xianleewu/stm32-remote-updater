@@ -328,6 +328,12 @@ void ServerWindow::on_pushButton_httpd_clicked()
 {
     if(0 != destroyHttpd()) {
         mFilerServer = new FileServer();
-        mFilerServer->startServer(ui->lineEdit_HttpdPort->text().toInt());
+
+        int ret = mFilerServer->startServer(ui->lineEdit_HttpdPort->text().toInt());
+        if (ret < 0) {
+            QMessageBox::critical(NULL, "Error",
+                                 "Open http server failed",
+                                 QMessageBox::Yes, QMessageBox::Yes);
+        }
     }
 }

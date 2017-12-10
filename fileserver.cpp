@@ -33,6 +33,7 @@ int FileServer::startServer(int port)
 
     if (!mServer->listen(port)) {
         qDebug()<<tr("Failed to create server");
+        return -1;
     }
 
     return 0;
