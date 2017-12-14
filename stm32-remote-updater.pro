@@ -8,7 +8,7 @@ QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = tcpserver
+TARGET = stm32-remote-updater
 TEMPLATE = app
 
 
@@ -24,6 +24,8 @@ HEADERS  += serverwindow.h \
     fileserver.h
 
 FORMS    += serverwindow.ui
+
+RC_FILE = logo.rc
 
 RESOURCES += \
     qdarkstyle/style.qrc
