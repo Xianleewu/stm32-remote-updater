@@ -102,9 +102,7 @@ void ServerWindow::disconnectSocket(QTcpSocket* socket)
     }
 
     QString peerinfo = tr("%1:%2").arg(socket->peerAddress().toString()).arg(socket->peerPort());
-    int tIndex = ui->comboBox->findText(peerinfo);
 
-    ui->comboBox->removeItem(tIndex);
     mSocketClients.removeClient(peerinfo);
     socket->deleteLater();
 }
@@ -189,8 +187,6 @@ void ServerWindow::new_client_request()
 
     qDebug() << peerinfo;
     mSocketClients.addNewClient(peerinfo, newSocket);
-    ui->comboBox->addItem(peerinfo);
-    ui->comboBox->setCurrentIndex(ui->comboBox->count() - 1);
 
     ui->textBrowser->insertPlainText(tr("New client connected!\n"));
 
@@ -284,17 +280,6 @@ void ServerWindow::on_pushButton_update_clicked()
     }
 }
 
-void ServerWindow::on_comboBox_currentIndexChanged(const QString &arg1)
-{
-    qDebug() << arg1;
-    mTcpSocket = mSocketClients.getClientFromInfo(arg1);
-    if(mTcpSocket != nullptr) {
-        qDebug() << mTcpSocket;
-    } else {
-        qDebug() << tr("No a valid client");
-    }
-}
-
 void ServerWindow::on_pushButton_loader_clicked()
 {
     generateUpdateCmd(CMD_TYPE_LOADER, FILE_NAME_NONE);
@@ -317,11 +302,6 @@ void ServerWindow::on_pushButton_app_clicked()
         QTextStream tOutStream(mTcpSocket);
         tOutStream << mUpdateCmd;
     }
-}
-
-void ServerWindow::on_pushButton_disconnect_clicked()
-{
-    disconnectSocket(mTcpSocket);
 }
 
 void ServerWindow::on_pushButton_httpd_clicked()
