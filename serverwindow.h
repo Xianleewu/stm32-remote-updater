@@ -36,65 +36,34 @@ public:
     explicit ServerWindow(QWidget *parent = 0);
     ~ServerWindow();
 private:
-    QTcpServer* mTcpServer;
-    QTcpSocket* mTcpSocket;
     QFile* mFile;
     FileServer* mFilerServer;
 
     QString mUpdateCmd;
-    SocketClients mSocketClients;
-
-    quint64 mFileSize;
-    quint64 mFileSent;
 
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     int m_nMouseClick_X_Coordinate;
     int m_nMouseClick_Y_Coordinate;
 
-    void disconnectSocket(QTcpSocket* socket);
     void generateUpdateCmd(QString cmd, QString filepath);
     int destroyHttpd();
 
     void showMessageNoFile();
     void showMessageNoClient();
 
-    bool mFinished;
-
 private slots:
-    void on_lost_connection();
-
     void on_pushButton_browser_clicked();
 
     void on_pushButton_close_clicked();
 
     void on_pushButton_min_clicked();
 
-    void on_pushButton_bind_clicked();
-
     void on_pushButton_clear_clicked();
 
-    void new_client_request();
-
-    void new_client_connected();
-
-    void got_new_data();
-
-    void on_pushButton_clear_in_clicked();
-
-    void on_pushButton_send_clicked();
-
-    void on_socket_wirten(qint64);
-
-    void on_pushButton_send_file_clicked();
-
-    void on_pushButton_update_clicked();
-
-    void on_pushButton_loader_clicked();
-
-    void on_pushButton_app_clicked();
-
     void on_pushButton_httpd_clicked();
+
+    void on_pushButton_setVersion_clicked();
 
 private:
     Ui::ServerWindow *ui;

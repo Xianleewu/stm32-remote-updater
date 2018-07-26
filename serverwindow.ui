@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>720</width>
-    <height>479</height>
+    <height>367</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -1315,7 +1315,7 @@ QDateEdit::down-arrow:focus
      <x>20</x>
      <y>0</y>
      <width>301</width>
-     <height>461</height>
+     <height>351</height>
     </rect>
    </property>
    <property name="title">
@@ -1328,7 +1328,7 @@ QDateEdit::down-arrow:focus
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>150</y>
+      <y>80</y>
       <width>281</width>
       <height>201</height>
      </rect>
@@ -1340,24 +1340,10 @@ QDateEdit::down-arrow:focus
       <x>11</x>
       <y>28</y>
       <width>62</width>
-      <height>111</height>
+      <height>41</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;本机地址：&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;本机端口：&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
@@ -1373,42 +1359,10 @@ QDateEdit::down-arrow:focus
       <x>80</x>
       <y>28</y>
       <width>141</width>
-      <height>111</height>
+      <height>41</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QLineEdit" name="lineEdit_ip">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>0.0.0.0</string>
-       </property>
-       <property name="clearButtonEnabled">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lineEdit_port">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>6060</string>
-       </property>
-       <property name="clearButtonEnabled">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item>
       <widget class="QLineEdit" name="lineEdit_HttpdPort">
        <property name="sizePolicy">
@@ -1437,48 +1391,7 @@ QDateEdit::down-arrow:focus
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>410</y>
-      <width>281</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLineEdit" name="lineEdit_out">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>2</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>update</string>
-       </property>
-       <property name="clearButtonEnabled">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_send">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>1</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>发送</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>360</y>
+      <y>290</y>
       <width>281</width>
       <height>41</height>
      </rect>
@@ -1518,36 +1431,10 @@ QDateEdit::down-arrow:focus
       <x>230</x>
       <y>23</y>
       <width>58</width>
-      <height>121</height>
+      <height>51</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_3">
-     <item>
-      <widget class="QPushButton" name="pushButton_bind">
-       <property name="locale">
-        <locale language="Chinese" country="China"/>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="qdarkstyle/style.qrc">
-         <normaloff>:/qss_icons/rc/link.png</normaloff>:/qss_icons/rc/link.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>32</width>
-         <height>32</height>
-        </size>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item>
       <widget class="QPushButton" name="pushButton_httpd">
        <property name="locale">
@@ -1583,14 +1470,13 @@ QDateEdit::down-arrow:focus
    <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
-   <zorder>layoutWidget</zorder>
    <zorder>textBrowser</zorder>
   </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>560</x>
-     <y>430</y>
+     <y>310</y>
      <width>141</width>
      <height>31</height>
     </rect>
@@ -1627,7 +1513,7 @@ QDateEdit::down-arrow:focus
      <x>340</x>
      <y>0</y>
      <width>361</width>
-     <height>381</height>
+     <height>291</height>
     </rect>
    </property>
    <property name="title">
@@ -1700,95 +1586,6 @@ QDateEdit::down-arrow:focus
     </property>
     <property name="text">
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;固件URL：&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>290</y>
-      <width>341</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="pushButton_send_file">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>发送文件</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_update">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>升级</string>
-       </property>
-       <property name="autoDefault">
-        <bool>false</bool>
-       </property>
-       <property name="default">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_loader">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>运行Loader</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_app">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>运行APP</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QProgressBar" name="progressBar_tcp">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>350</y>
-      <width>341</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="value">
-     <number>24</number>
     </property>
    </widget>
    <widget class="QLabel" name="label_6">
@@ -1869,10 +1666,10 @@ QDateEdit::down-arrow:focus
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_FileInfo_2">
+      <widget class="QLineEdit" name="lineEdit_hardversion">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-         <horstretch>0</horstretch>
+         <horstretch>2</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
@@ -1882,6 +1679,9 @@ QDateEdit::down-arrow:focus
          <height>40</height>
         </size>
        </property>
+       <property name="inputMethodHints">
+        <set>Qt::ImhDigitsOnly</set>
+       </property>
        <property name="text">
         <string>20180707</string>
        </property>
@@ -1889,7 +1689,7 @@ QDateEdit::down-arrow:focus
         <bool>true</bool>
        </property>
        <property name="readOnly">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="clearButtonEnabled">
         <bool>false</bool>
@@ -1904,10 +1704,10 @@ QDateEdit::down-arrow:focus
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_FileInfo_3">
+      <widget class="QLineEdit" name="lineEdit_softversion">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-         <horstretch>0</horstretch>
+         <horstretch>2</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
@@ -1917,6 +1717,9 @@ QDateEdit::down-arrow:focus
          <height>40</height>
         </size>
        </property>
+       <property name="inputMethodHints">
+        <set>Qt::ImhDigitsOnly</set>
+       </property>
        <property name="text">
         <string>20180730</string>
        </property>
@@ -1924,10 +1727,23 @@ QDateEdit::down-arrow:focus
         <bool>true</bool>
        </property>
        <property name="readOnly">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="clearButtonEnabled">
         <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_setVersion">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>2</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>设置</string>
        </property>
       </widget>
      </item>
@@ -1947,7 +1763,7 @@ QDateEdit::down-arrow:focus
       <widget class="QLineEdit" name="lineEdit_file">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>3</horstretch>
+         <horstretch>30</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
@@ -1966,7 +1782,7 @@ QDateEdit::down-arrow:focus
       <widget class="QPushButton" name="pushButton_browser">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>1</horstretch>
+         <horstretch>8</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
@@ -1978,44 +1794,9 @@ QDateEdit::down-arrow:focus
     </layout>
    </widget>
   </widget>
-  <widget class="QLabel" name="label_5">
-   <property name="geometry">
-    <rect>
-     <x>350</x>
-     <y>400</y>
-     <width>181</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="cursor">
-    <cursorShape>OpenHandCursor</cursorShape>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="textFormat">
-    <enum>Qt::RichText</enum>
-   </property>
-   <property name="pixmap">
-    <pixmap resource="qdarkstyle/style.qrc">:/qss_icons/rc/logo.png</pixmap>
-   </property>
-   <property name="scaledContents">
-    <bool>false</bool>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-   <property name="openExternalLinks">
-    <bool>true</bool>
-   </property>
-   <property name="textInteractionFlags">
-    <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
-   </property>
-  </widget>
   <zorder>groupBox_FileServer</zorder>
   <zorder>groupBox</zorder>
   <zorder>layoutWidget</zorder>
-  <zorder>label_5</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

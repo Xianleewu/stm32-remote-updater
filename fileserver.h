@@ -21,15 +21,20 @@ public:
     int startServer(int port);
     int stopServer();
     int setFile(QString file);
+    void setVersion(int hard, int soft);
     static QString mFirmware;
 private:
     QMHDServer* mServer;
     QMHDRouter* mRouter;
     QMutex mMutex;
+    QMutex versionMutex;
 
-    QString* mFilePath;
+    static int hardVersion;
+    static int softVersion;
+
 public slots:
     void sendFile();
+    void sendVersion();
 };
 
 #endif // __FILE_SERVER_H__

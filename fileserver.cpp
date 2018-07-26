@@ -5,9 +5,13 @@
 #include <QByteArray>
 #include <QDebug>
 #include <QCryptographicHash>
+#include <QJsonObject>
+#include <QJsonDocument>
 #include "fileserver.h"
 
 QString FileServer::mFirmware("");
+int FileServer::hardVersion = 20180720;
+int FileServer::softVersion = 20180720;
 
 FileServer::FileServer(QObject* parent)
     : QMHDController(parent)
@@ -27,6 +31,7 @@ int FileServer::startServer(int port)
     mRouter = new QMHDRouter(qApp);
 
     mRouter->addRoute("GET", "/firmware.bin", this, SLOT(sendFile()));
+    mRouter->addRoute("GET", "checkupdate", this, SLOT(sendVersion()));
     mRouter->connect(mServer, &QMHDServer::newRequest,
                     mRouter, &QMHDRouter::processRequest,
                     Qt::DirectConnection);
@@ -64,6 +69,16 @@ int FileServer::setFile(QString filepath)
     return 0;
 }
 
+void FileServer::setVersion(int hard, int soft)
+{
+    versionMutex.lock();
+
+    hardVersion = hard;
+    softVersion = soft;
+
+    versionMutex.unlock();
+}
+
 void FileServer::sendFile()
 {
     mMutex.lock();
@@ -88,4 +103,22 @@ void FileServer::sendFile()
     }
 
     mMutex.unlock();
+}
+
+void FileServer::sendVersion()
+{
+    QJsonObject jsonObj;
+    QJsonDocument jsonDoc;
+
+    versionMutex.lock();
+
+    jsonObj.insert("hardVersion", hardVersion);
+    jsonObj.insert("softVersion", softVersion);
+    jsonDoc.setObject(jsonObj);
+
+    response()->setHeader("Content-Type", "application/json");
+    response()->setHeader("X-Thread-Id", QString::number((quint64) QThread::currentThreadId()));
+    response()->send(jsonDoc);
+
+    versionMutex.unlock();
 }

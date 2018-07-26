@@ -1,5 +1,6 @@
 #include "serverwindow.h"
 #include "ui_serverwindow.h"
+#include <QSettings>
 #include "QThread"
 
 ServerWindow::ServerWindow(QWidget *parent) :
@@ -11,18 +12,17 @@ ServerWindow::ServerWindow(QWidget *parent) :
 
     mFile = NULL;
     mFilerServer = NULL;
-    mFinished = true;
-    mTcpSocket = NULL;
-    mFileSize = 0;
-    mFileSent = 0;
     mUpdateCmd = tr("select file first");
 
-    mTcpServer = new QTcpServer(this);
-    ui->progressBar_tcp->setMaximum(100);
-    ui->progressBar_tcp->setMinimum(0);
-    ui->progressBar_tcp->setValue(0);
+    QSettings setting(QString::fromStdString("config"),QSettings::IniFormat);
+    //此处只拿用一组举例，有多个可以自行加设循环
+    setting.beginGroup("updateversion");
+    QString hardversion = setting.value("hardversion").toString();
+    QString softversion = setting.value("softversion").toString();
+    setting.endGroup();
 
-    connect(mTcpServer, SIGNAL(newConnection()), this, SLOT(new_client_request()));
+    ui->lineEdit_hardversion->setText(hardversion);
+    ui->lineEdit_softversion->setText(softversion);
 }
 
 ServerWindow::~ServerWindow()
@@ -95,24 +95,6 @@ void ServerWindow::showMessageNoClient()
                          QMessageBox::Yes, QMessageBox::Yes);
 }
 
-void ServerWindow::disconnectSocket(QTcpSocket* socket)
-{
-    if(socket == nullptr) {
-        return;
-    }
-
-    QString peerinfo = tr("%1:%2").arg(socket->peerAddress().toString()).arg(socket->peerPort());
-
-    mSocketClients.removeClient(peerinfo);
-    socket->deleteLater();
-}
-
-void ServerWindow::on_lost_connection()
-{
-    QTcpSocket* tSocket = qobject_cast<QTcpSocket*>(sender());
-    disconnectSocket(tSocket);
-}
-
 void ServerWindow::on_pushButton_browser_clicked()
 {
     if (!mFilerServer) {
@@ -158,150 +140,9 @@ void ServerWindow::on_pushButton_min_clicked()
     this->showMinimized();
 }
 
-void ServerWindow::on_pushButton_bind_clicked()
-{
-    if(mTcpServer->isListening()) {
-        mTcpServer->close();
-        ui->textBrowser->insertPlainText(tr("Update server closed!\n"));
-    } else {
-        if(!mTcpServer->listen(QHostAddress::Any, ui->lineEdit_port->text().toInt()))
-        {
-            mTcpServer->close();
-            qDebug() << tr("listen error!");
-            return;
-        }
-        ui->textBrowser->insertPlainText(tr("Update server created!\n"));
-    }
-}
-
 void ServerWindow::on_pushButton_clear_clicked()
 {
     ui->textBrowser->clear();
-}
-
-void ServerWindow::new_client_request()
-{
-    QTcpSocket* newSocket = mTcpServer->nextPendingConnection();
-
-    QString peerinfo = tr("%1:%2").arg(newSocket->peerAddress().toString()).arg(newSocket->peerPort());
-
-    qDebug() << peerinfo;
-    mSocketClients.addNewClient(peerinfo, newSocket);
-
-    ui->textBrowser->insertPlainText(tr("New client connected!\n"));
-
-    connect(newSocket, SIGNAL(connected()), this, SLOT(new_client_connected()));
-    connect(newSocket, SIGNAL(readyRead()), this, SLOT(got_new_data()));
-    connect(newSocket, SIGNAL(disconnected()), this, SLOT(on_lost_connection()));
-    connect(newSocket, SIGNAL(bytesWritten(qint64)), this, SLOT(on_socket_wirten(qint64)));
-}
-
-void ServerWindow::new_client_connected()
-{
-    ui->textBrowser->insertPlainText(tr("New client connected!\n"));
-}
-
-void ServerWindow::got_new_data()
-{
-    QTcpSocket* tSocket = qobject_cast<QTcpSocket*>(sender());
-    QString res;
-
-    res += tSocket->readAll();
-    ui->textBrowser->moveCursor(QTextCursor::End);
-    ui->textBrowser->textCursor().insertText(res);
-}
-
-void ServerWindow::on_pushButton_clear_in_clicked()
-{
-    ui->lineEdit_out->clear();
-}
-
-void ServerWindow::on_pushButton_send_clicked()
-{
-    if(!mTcpSocket) {
-        showMessageNoClient();
-    } else {
-        QTextStream tOutStream(mTcpSocket);
-        tOutStream << ui->lineEdit_out->text();
-    }
-}
-
-void ServerWindow::on_socket_wirten(qint64)
-{
-    if(mFinished) {
-        return;
-    }
-
-    if(!mTcpSocket) {
-        showMessageNoClient();
-        return;
-    }
-
-    if(!mFile) {
-        showMessageNoFile();
-        return;
-    }
-
-    char tFileBuf[FILE_BLOCK_SIZE] = {0};
-    int readLen =  mFile->read(tFileBuf, FILE_BLOCK_SIZE);
-    if(readLen != FILE_BLOCK_SIZE) {
-        mFinished = true;
-        ui->progressBar_tcp->setValue(100);
-    }
-
-    mTcpSocket->write(tFileBuf, readLen);
-
-    mFileSent += readLen;
-    ui->progressBar_tcp->setValue(100 * (mFileSent/mFileSize));
-}
-
-void ServerWindow::on_pushButton_send_file_clicked()
-{
-    mFile = new QFile(ui->lineEdit_file->text());
-    if(!(mFile->open(QFile::ReadOnly))){
-        ui->textBrowser->insertPlainText(tr("open input file error!\n"));
-    } else {
-        ui->progressBar_tcp->setValue(0);
-        ui->textBrowser->insertPlainText(tr("Successed to open update file!\n"));
-        mFinished = false;
-        mFileSize = mFile->size();
-        mFileSent = 0;
-        on_socket_wirten(0);
-    }
-}
-
-void ServerWindow::on_pushButton_update_clicked()
-{
-    if(!mTcpSocket) {
-        showMessageNoClient();
-    } else {
-        QTextStream tOutStream(mTcpSocket);
-        tOutStream << ui->lineEdit_updatecmd->text();
-    }
-}
-
-void ServerWindow::on_pushButton_loader_clicked()
-{
-    generateUpdateCmd(CMD_TYPE_LOADER, FILE_NAME_NONE);
-
-    if(!mTcpSocket) {
-        showMessageNoClient();
-    } else {
-        QTextStream tOutStream(mTcpSocket);
-        tOutStream << mUpdateCmd;
-    }
-}
-
-void ServerWindow::on_pushButton_app_clicked()
-{
-    generateUpdateCmd(CMD_TYPE_RUNAPP, FILE_NAME_NONE);
-
-    if(!mTcpSocket) {
-        showMessageNoClient();
-    } else {
-        QTextStream tOutStream(mTcpSocket);
-        tOutStream << mUpdateCmd;
-    }
 }
 
 void ServerWindow::on_pushButton_httpd_clicked()
@@ -312,8 +153,33 @@ void ServerWindow::on_pushButton_httpd_clicked()
         int ret = mFilerServer->startServer(ui->lineEdit_HttpdPort->text().toInt());
         if (ret < 0) {
             QMessageBox::critical(NULL, "Error",
-                                 "Open http server failed",
-                                 QMessageBox::Yes, QMessageBox::Yes);
+                                  "Open http server failed",
+                                  QMessageBox::Yes, QMessageBox::Yes);
         }
+
+        mFilerServer->setVersion(ui->lineEdit_hardversion->text().toInt(),
+                                 ui->lineEdit_softversion->text().toInt());
     }
+}
+
+void ServerWindow::on_pushButton_setVersion_clicked()
+{
+    if (!mFilerServer) {
+        QMessageBox::warning(NULL, "warning",
+                             "Please open update server first!",
+                             QMessageBox::Yes, QMessageBox::Yes);
+        return;
+    }
+
+    mFilerServer->setVersion(ui->lineEdit_hardversion->text().toInt(),
+                             ui->lineEdit_softversion->text().toInt());
+
+    //设置setting
+    QSettings setting(QString::fromStdString("config"), QSettings::IniFormat);
+    //从配置文件中读全部的Group
+    setting.beginGroup("updateversion");
+    //存数据前要保存成QString形式的
+    setting.setValue("hardversion", ui->lineEdit_hardversion->text());
+    setting.setValue("softversion", ui->lineEdit_softversion->text());
+    setting.endGroup();
 }
